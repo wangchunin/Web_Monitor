@@ -1,0 +1,7 @@
+{
+  "from_email": "wangchunin@126.com",
+  "from_email_pwd": "252515144a",
+  "to_email": "1104436919@qq.com",
+  "smtp_server": "smtp.126.com",
+  "smtp_server_port": 465
+}
