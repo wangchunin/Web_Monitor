@@ -7,6 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 import time
+import json
 
 import re
 import sendmail
@@ -43,11 +44,30 @@ browser.implicitly_wait(10)
 if g.ccbox("是否加载cookie",choices=("是","否")):
     url = g.enterbox(msg="输入网址", title="url")
     cookies = g.enterbox(msg="输入cookie", title="cookie")
+
+    '''
+    print(cookies)
+    input()
     cookies = cookie_resize(cookies)
+    print(cookies)
+    input()
     browser.get(url)
     browser.delete_all_cookies()
     for cookie in cookies:
         browser.add_cookie(cookie_dict=cookie)
+    '''
+    cookies = json.loads(cookies)
+    print(cookies)
+    browser.get(url)
+    browser.delete_all_cookies()
+    for cook in cookies:
+        # 遍历删除sameSite,注意，旧版chrome可能是没有samesite
+        try:
+            print("POP sameSite")
+            print(cook.pop('sameSite'))
+        except:
+            pass
+        browser.add_cookie(cook)
     browser.refresh()
 else:
     g.ccbox("请在弹出chrome中开打页面并登录", choices=("开始"))
