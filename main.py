@@ -111,6 +111,7 @@ print(str2)
 # str2 = str.strip()
 # str3 = re.sub(' ','',str)
 t = g.integerbox(msg="刷新时间",title="刷新时间",lowerbound=0,upperbound=100)
+out_str = g.enterbox(msg="输入mail发送信息",title="字符")
 count_http_error = 0
 while True:
     try:
@@ -137,12 +138,13 @@ while True:
             except NoSuchElementException as e:
                 print("NoSuchElementException:", e)
                 print("no elem!")
-                sendmail.send_mail("no elem!", "no elem!", "no elem!")
+                #sendmail.send_mail("no elem!", "no elem!", "no elem!")
+                sendmail.send_mail("Ok!" + out_str, "ok", elem.text)
                 time.sleep(600)
             else:
                 if(elem.text != str2):
                     print(elem.text)
                     print("ok")
-                    sendmail.send_mail("Ok!", "ok", elem.text)
+                    sendmail.send_mail("Ok!"+out_str, "ok", elem.text)
                     time.sleep(600)
             time.sleep(t)
