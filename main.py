@@ -68,7 +68,7 @@ if g.ccbox("是否加载cookie",choices=("是","否")):
         except:
             pass
         browser.add_cookie(cook)
-    browser.refresh()
+    browser.get(url)
 else:
     g.ccbox("请在弹出chrome中开打页面并登录", choices=("开始"))
 
@@ -99,17 +99,16 @@ if is_frame:
 # driver.switch_to.frame(driver.find_element_by_xpath("//iframe[contains(@src,'myframe')]"))
 
 str1 = g.enterbox(msg="输入Xpath",title="Xpath")
-str2 = g.enterbox(msg="原来值,直接copy element即可",title="原来值")
-try:
-    str2 = str2.split(r'<')[-2].split(r'>')[1]
-except:
-    print("cut element error!")
-print(str1)
-str2 = str2.strip()
-print(str2)
 
-# str2 = str.strip()
-# str3 = re.sub(' ','',str)
+if(is_frame): # 关于frame调试可以参考banwagon
+    browser.switch_to.frame(browser.find_element_by_css_selector('[' + str3 + ']'))
+elem_init = browser.find_element_by_xpath(str1)
+str2 = elem_init.text
+
+print("Xpath:",str1)
+print("element:", str2)
+
+
 t = g.integerbox(msg="刷新时间",title="刷新时间",lowerbound=0,upperbound=100)
 out_str = g.enterbox(msg="输入mail发送信息",title="字符")
 count_http_error = 0
