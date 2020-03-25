@@ -13,6 +13,12 @@ import re
 import sendmail
 import easygui as g
 import ast
+from time import strftime, localtime
+
+# 打印当前时间
+def printTime():
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime()))
+    return
 #************忽略warning*************
 import warnings
 warnings.filterwarnings("ignore")
@@ -116,6 +122,7 @@ while True:
     try:
         browser.refresh()
     except TimeoutException as e:
+        printTime()
         print('time out in search page', e)
     else:
         try:
@@ -126,6 +133,7 @@ while True:
                 if(count_http_error > 100):
                     sendmail.send_mail("count_http_error", "count_http_error", "count_http_error")
                     count_http_error = 0
+                printTime()
                 print("网页打开错误！")
                 time.sleep(5)
                 continue
@@ -135,6 +143,7 @@ while True:
                     browser.switch_to.frame(browser.find_element_by_css_selector('[' + str3 + ']'))
                 elem = browser.find_element_by_xpath(str1)
             except NoSuchElementException as e:
+                printTime()
                 print("NoSuchElementException:", e)
                 print("no elem!")
                 #sendmail.send_mail("no elem!", "no elem!", "no elem!")
@@ -142,8 +151,13 @@ while True:
                 time.sleep(600)
             else:
                 if(elem.text != str2):
+                    printTime()
                     print(elem.text)
                     print("ok")
                     sendmail.send_mail("Ok!"+out_str, "ok", elem.text)
                     time.sleep(600)
+                else:
+                    printTime()
+                    print("内容没变！")
+
             time.sleep(t)
