@@ -118,6 +118,7 @@ print("element:", str2)
 t = g.integerbox(msg="刷新时间",title="刷新时间",lowerbound=0,upperbound=100)
 out_str = g.enterbox(msg="输入mail发送信息",title="字符")
 count_http_error = 0
+no_elem_flag = False
 while True:
     try:
         browser.refresh()
@@ -146,11 +147,14 @@ while True:
                 printTime()
                 print("NoSuchElementException:", e)
                 print("no elem!")
-                #sendmail.send_mail("no elem!", "no elem!", "no elem!")
-                sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + e)
                 time.sleep(600)
+                print("sleep600sec,then restart!")
+                if no_elem_flag == True:
+                    sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + e)
+                no_elem_flag = True
             else:
                 if(elem.text != str2):
+                    no_elem_flag = False
                     printTime()
                     print(elem.text)
                     print("ok")
