@@ -128,7 +128,7 @@ while True:
         try:
             if(is_frame):
                 browser.switch_to.default_content()
-            if("无法访问此网站" == browser.find_element_by_css_selector('[jsvalues=".innerHTML:msg"]').text):
+            if("无法访问此网站" == browser.find_element_by_css_selector('[jsvalues=".innerHTML:msg"]').text):# 其他情况应该全部归为一类
                 count_http_error += 1
                 if(count_http_error > 100):
                     sendmail.send_mail("count_http_error", "count_http_error", "count_http_error")
@@ -147,14 +147,14 @@ while True:
                 print("NoSuchElementException:", e)
                 print("no elem!")
                 #sendmail.send_mail("no elem!", "no elem!", "no elem!")
-                sendmail.send_mail("Ok!" + out_str, "ok", elem.text)
+                sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + e)
                 time.sleep(600)
             else:
                 if(elem.text != str2):
                     printTime()
                     print(elem.text)
                     print("ok")
-                    sendmail.send_mail("Ok!"+out_str, "ok", elem.text)
+                    sendmail.send_mail(out_str, "待确认！值发生变化！", elem.text)
                     time.sleep(600)
                 else:
                     printTime()
