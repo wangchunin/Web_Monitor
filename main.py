@@ -19,6 +19,8 @@ from time import strftime, localtime
 def printTime():
     print(strftime("%Y-%m-%d %H:%M:%S", localtime()))
     return
+def getTime():
+    return str(strftime("%Y-%m-%d %H:%M:%S", localtime()))
 #************忽略warning*************
 import warnings
 warnings.filterwarnings("ignore")
@@ -51,17 +53,6 @@ if g.ccbox("是否加载cookie",choices=("是","否")):
     url = g.enterbox(msg="输入网址", title="url")
     cookies = g.enterbox(msg="输入cookie", title="cookie")
 
-    '''
-    print(cookies)
-    input()
-    cookies = cookie_resize(cookies)
-    print(cookies)
-    input()
-    browser.get(url)
-    browser.delete_all_cookies()
-    for cookie in cookies:
-        browser.add_cookie(cookie_dict=cookie)
-    '''
     cookies = json.loads(cookies)
     print(cookies)
     browser.get(url)
@@ -76,7 +67,8 @@ if g.ccbox("是否加载cookie",choices=("是","否")):
         browser.add_cookie(cook)
     browser.get(url)
 else:
-    g.ccbox("请在弹出chrome中开打页面并登录", choices=("开始"))
+    url = g.enterbox(msg="输入网址", title="url")
+    browser.get(url)
 
 is_frame = g.ccbox("是否需要frame",choices=("是","否"))
 if is_frame:
@@ -132,7 +124,7 @@ while True:
             if("无法访问此网站" == browser.find_element_by_css_selector('[jsvalues=".innerHTML:msg"]').text):# 其他情况应该全部归为一类
                 count_http_error += 1
                 if(count_http_error > 100):
-                    sendmail.send_mail("count_http_error", "count_http_error", "count_http_error")
+                    sendmail.send_mail("count_http_error", "count_http_error", getTime())
                     count_http_error = 0
                 printTime()
                 print("网页打开错误！")
@@ -150,7 +142,7 @@ while True:
                 time.sleep(600)
                 print("sleep600sec,then restart!")
                 if no_elem_flag == True:
-                    sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + e)
+                    sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + getTime())
                 no_elem_flag = True
             else:
                 if(elem.text != str2):
@@ -158,7 +150,7 @@ while True:
                     printTime()
                     print(elem.text)
                     print("ok")
-                    sendmail.send_mail(out_str, "待确认！值发生变化！", elem.text)
+                    sendmail.send_mail(out_str, "待确认！值发生变化！", getTime())
                     time.sleep(600)
                 else:
                     printTime()
