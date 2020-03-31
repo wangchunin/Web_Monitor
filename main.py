@@ -142,7 +142,7 @@ while True:
                 time.sleep(600)
                 print("sleep600sec,then restart!")
                 if no_elem_flag == True:
-                    sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！" + getTime())
+                    sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！", getTime())
                 no_elem_flag = True
             else:
                 if(elem.text != str2):
