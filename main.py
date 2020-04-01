@@ -124,7 +124,9 @@ while True:
             if("无法访问此网站" == browser.find_element_by_css_selector('[jsvalues=".innerHTML:msg"]').text):# 其他情况应该全部归为一类
                 count_http_error += 1
                 if(count_http_error > 100):
+                    printTime()
                     sendmail.send_mail("count_http_error", "count_http_error", getTime())
+                    print("网页打开错误很多次了，可能是网络原因，已经发送了邮件反应此情况")
                     count_http_error = 0
                 printTime()
                 print("网页打开错误！")
@@ -138,15 +140,15 @@ while True:
             except NoSuchElementException as e:
                 printTime()
                 print("NoSuchElementException:", e)
-                print("no elem!")
-                time.sleep(600)
-                print("sleep600sec,then restart!")
                 if no_elem_flag == True:
                     sendmail.send_mail(out_str, "待确认！无法找到元素，可能是满足条件！", getTime())
+                    print("has sent mail,now sleep600sec,then restart!")
+                    time.sleep(600)
                 no_elem_flag = True
+                continue
             else:
+                no_elem_flag = False
                 if(elem.text != str2):
-                    no_elem_flag = False
                     printTime()
                     print(elem.text)
                     print("ok")
